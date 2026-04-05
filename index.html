@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adarsh Medical | Premium Pharmacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap');
+        
+        :root {
+            --charcoal: #1a1c1e;
+            --medical-green: #74c365;
+            --bg-grey: #f2f2f2;
+            --deep-slate: #0f1113;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-grey);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+
+        .glass-nav {
+            background: rgba(15, 17, 19, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(116, 195, 101, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(15, 17, 19, 1), #1a1c1e);
+        }
+
+        .product-card {
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
+        }
+
+        .category-btn {
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .category-btn.active {
+            background: var(--medical-green);
+            color: var(--deep-slate);
+            box-shadow: 0 10px 20px rgba(116, 195, 101, 0.2);
+        }
+
+        #cartDrawer, #devPanel {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        #cartDrawer.open, #devPanel.open { transform: translateX(0); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        .btn-medical {
+            background: var(--medical-green);
+            color: var(--deep-slate);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+        .btn-medical:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        .floating-badge {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .modal-overlay {
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .insta-link {
+            transition: all 0.3s ease;
+            color: #E1306C;
+        }
+        .insta-link:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(225, 48, 108, 0.4));
+        }
+
+        .location-link {
+            color: #4285F4;
+            transition: all 0.3s ease;
+        }
+        .location-link:hover {
+            color: #34a853;
+            transform: translateY(-2px);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-[100] glass-nav px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-[#74c365] rounded-xl flex items-center justify-center text-slate-900 shadow-lg shadow-[#74c365]/20">
+                    <i class="fas fa-plus-medical"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black text-white tracking-tighter leading-none">ADARSH</h1>
+                    <p class="text-[9px] font-bold text-[#74c365] uppercase tracking-[0.4em]">Healthcare</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 md:space-x-8">
+                <div class="hidden md:flex space-x-8 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                    <a href="#hero" class="hover:text-[#74c365] transition">Home</a>
+                    <a href="#store" class="hover:text-[#74c365] transition">Pharmacy</a>
+                </div>
+                
+                <div class="flex items-center space-x-5">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Adarsh+Medical+Store+Chhindwara" target="_blank" class="location-link flex flex-col items-center">
+                        <i class="fas fa-route text-xl"></i>
+                        <span class="text-[8px] font-black uppercase mt-1">Directions</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/adarsh_medicals_/" target="_blank" class="insta-link flex flex-col items-center">
+                        <i class="fab fa-instagram text-xl"></i>
+                        <span class="text-[8px] font-black uppercase mt-1">Instagram</span>
+                    </a>
+
+                    <button onclick="toggleCart()" class="relative group ml-2">
+                        <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white group-hover:bg-[#74c365] group-hover:text-black transition-all">
+                            <i class="fas fa-shopping-bag text-xs"></i>
+                        </div>
+                        <span id="cartCount" class="absolute -top-1 -right-1 w-5 h-5 bg-[#74c365] text-black text-[10px] font-black rounded-full flex items-center justify-center border-2 border-[#1a1c1e] hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="min-h-screen hero-gradient flex items-center pt-20 overflow-hidden relative">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 -right-20 w-96 h-96 bg-[#74c365]/10 blur-[120px] rounded-full"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="text-center lg:text-left">
+                <div class="inline-block px-4 py-1 rounded-full border border-[#74c365]/30 bg-[#74c365]/5 mb-6">
+                    <span class="text-[10px] font-black text-[#74c365] uppercase tracking-[0.3em]">Licensed & Trusted Pharmacy</span>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] mb-8">
+                    Modern Care. <br><span class="text-[#74c365] italic">Traditional Trust.</span>
+                </h1>
+                <p class="text-gray-400 text-lg md:text-xl max-w-xl mb-12 leading-relaxed">
+                    Premium medical inventory in Chhindwara. We deliver health, providing genuine medicines at regulated prices.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                    <a href="#store" class="btn-medical px-12 py-6 rounded-2xl text-xs shadow-2xl shadow-[#74c365]/20 text-center">Browse Pharmacy</a>
+                    <a href="https://wa.me/916261736546" class="bg-white/5 border border-white/10 text-white px-12 py-6 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all text-center">WhatsApp Now</a>
+                </div>
+            </div>
+            <div class="hidden lg:block relative">
+                <div class="relative z-10 floating-badge">
+                    <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?q=80&w=1000&auto=format&fit=crop" class="rounded-[4rem] shadow-2xl border-4 border-white/5 grayscale hover:grayscale-0 transition-all duration-700" alt="Pharmacy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Section -->
+    <section id="store" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+                <div class="max-w-2xl">
+                    <h2 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter mb-6">Medical <span class="text-[#74c365]">Inventory.</span></h2>
+                    <p class="text-gray-500 font-medium text-lg">Browse our updated stock of 50+ genuine medicines at government-approved prices.</p>
+                </div>
+                <div id="filterWrap" class="w-full md:w-auto flex overflow-x-auto gap-3 pb-2 no-scrollbar">
+                    <!-- Filters injected here -->
+                </div>
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Products injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Passcode Modal -->
+    <div id="passModal" class="modal-overlay fixed inset-0 z-[2000] items-center justify-center">
+        <div class="bg-[#1a1c1e] p-10 rounded-[3rem] border border-white/10 w-full max-sm:mx-4 max-w-sm">
+            <h3 class="text-white text-center font-black uppercase tracking-widest mb-6">Admin Access</h3>
+            <input type="password" id="devPassInput" placeholder="Enter Passcode" class="w-full bg-white/5 p-5 rounded-2xl border border-white/10 text-white text-center text-xl mb-4 focus:border-[#74c365] outline-none tracking-widest">
+            <button onclick="verifyDevPass()" class="w-full btn-medical py-5 rounded-2xl">Access Console</button>
+            <button onclick="closeDevPass()" class="w-full mt-4 text-gray-500 text-[10px] font-black uppercase tracking-widest">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Developer Panel -->
+    <div id="devPanel" class="fixed top-0 right-0 w-full max-w-2xl h-full bg-slate-50 z-[1500] shadow-2xl flex flex-col">
+        <div class="p-8 bg-slate-900 text-white flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-code text-[#74c365]"></i>
+                <h3 class="text-xs font-black uppercase tracking-widest">Management Console</h3>
+            </div>
+            <button onclick="toggleDevPanel()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 transition-all"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 mb-10">
+                <h4 class="text-xs font-black uppercase tracking-[0.2em] mb-6 text-[#74c365]">Add New Product</h4>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <input type="text" id="devName" placeholder="Product Name" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-slate-200">
+                    <input type="number" id="devPrice" placeholder="Price (Rs.)" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-slate-200">
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <select id="devCat" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-slate-200">
+                        <option>Pain & Fever</option>
+                        <option>Antibiotics</option>
+                        <option>Gastrointestinal</option>
+                        <option>Allergy</option>
+                        <option>Respiratory</option>
+                        <option>Cardiac & BP</option>
+                        <option>Diabetes</option>
+                        <option>Wellness</option>
+                        <option>Dermatology</option>
+                        <option>Baby Care</option>
+                    </select>
+                    <input type="text" id="devImg" placeholder="Image URL" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-slate-200">
+                </div>
+                <button onclick="addNewProduct()" class="w-full bg-[#74c365] text-black py-4 rounded-xl font-bold text-xs uppercase tracking-widest">Add to Inventory</button>
+            </div>
+
+            <h4 class="text-xs font-black uppercase tracking-[0.2em] mb-6 text-slate-400 px-2">Current Inventory Management</h4>
+            <div id="devInventoryList" class="space-y-4">
+                <!-- Dev items injected here -->
+            </div>
+        </div>
+        <div class="p-8 bg-white border-t">
+            <button onclick="resetToDefaults()" class="w-full border-2 border-red-500 text-red-500 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all text-center">Reset to Factory Defaults</button>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white z-[1000] shadow-2xl flex flex-col">
+        <div class="p-8 bg-slate-950 text-white flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-shopping-bag text-[#74c365]"></i>
+                <h3 class="text-xs font-black uppercase tracking-widest">Medical Order</h3>
+            </div>
+            <button onclick="toggleCart()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 transition-all"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cartItems" class="flex-1 overflow-y-auto p-8 space-y-6">
+            <!-- Items injected here -->
+        </div>
+        <div class="p-8 bg-slate-50 border-t">
+            <div class="flex justify-between items-center mb-8">
+                <span class="text-xs font-black text-gray-400 uppercase tracking-widest">Total Amount</span>
+                <span id="cartTotal" class="text-3xl font-black text-slate-900 tracking-tighter">Rs.0</span>
+            </div>
+            <button onclick="checkout()" class="w-full btn-medical py-6 rounded-2xl text-xs shadow-xl">Place WhatsApp Order</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start border-b border-white/5 pb-16 mb-16 gap-12">
+                <div class="flex flex-col items-center md:items-start">
+                    <div class="w-12 h-12 bg-[#74c365] rounded-2xl flex items-center justify-center text-slate-900 mb-6 shadow-lg shadow-[#74c365]/10">
+                        <i class="fas fa-plus-medical text-xl"></i>
+                    </div>
+                    <h2 class="text-white font-black tracking-tighter text-2xl mb-2">ADARSH MEDICAL STORE</h2>
+                    <p class="text-gray-600 text-xs font-bold uppercase tracking-[0.3em]">Chhindwara's Premier Pharmacy</p>
+                </div>
+
+                <div class="flex flex-col space-y-4 text-center md:text-left">
+                    <h3 class="text-white text-[10px] font-black uppercase tracking-widest mb-2">Visit Us</h3>
+                    <p class="text-gray-400 text-sm max-w-[200px]">Main Road, Near District Hospital, Chhindwara, Madhya Pradesh 480001</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Adarsh+Medical+Store+Chhindwara" target="_blank" class="text-[#74c365] font-black uppercase tracking-widest text-[10px] flex items-center justify-center md:justify-start space-x-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Get Directions</span>
+                    </a>
+                </div>
+
+                <div class="flex flex-col space-y-4 text-center md:text-left">
+                    <h3 class="text-white text-[10px] font-black uppercase tracking-widest mb-2">Connect</h3>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="https://www.instagram.com/adarsh_medicals_/" target="_blank" class="text-white/40 hover:text-[#E1306C] text-2xl transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/916261736546" target="_blank" class="text-white/40 hover:text-[#25D366] text-2xl transition-all">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center text-gray-500 text-[9px] font-black uppercase tracking-widest gap-8">
+                <div class="flex space-x-8 text-center md:text-left">
+                    <span>© 2024 Adarsh Healthcare</span>
+                    <a href="#" class="hover:text-[#74c365]">Privacy</a>
+                    <a href="#" class="hover:text-[#74c365]">T&C</a>
+                </div>
+                
+                <button onclick="openDevPass()" class="flex items-center space-x-2 text-white/10 hover:text-[#74c365] transition-all bg-white/5 px-4 py-2 rounded-full border border-white/5">
+                    <i class="fas fa-terminal"></i>
+                    <span>Admin Console</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const DEFAULT_DATA = [
+            { id: 1, name: "Dolo 650mg (Paracetamol)", price: 30, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 2, name: "Zerodol-P (Acelo + PCM)", price: 60, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 3, name: "Combiflam Tablet", price: 45, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 4, name: "Nimesulide 100mg", price: 35, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 5, name: "Brufen 400mg", price: 25, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 6, name: "Augmentin 625 DUO", price: 180, category: "Antibiotics", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 7, name: "Azithral 500mg (Azithromycin)", price: 120, category: "Antibiotics", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 8, name: "Taxim-O 200mg", price: 105, category: "Antibiotics", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 9, name: "Oflox 200mg", price: 65, category: "Antibiotics", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 10, name: "Gudcef 200mg", price: 145, category: "Antibiotics", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 11, name: "Pantocid 40mg", price: 120, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 12, name: "Omez 20mg (Omeprazole)", price: 55, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 13, name: "Digene Gel Syrup", price: 165, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 14, name: "Pudin Hara Pearls", price: 20, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 15, name: "Eno Orange Sachet", price: 10, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 16, name: "Loperamide 2mg", price: 15, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 17, name: "Allegra 120mg", price: 195, category: "Allergy", img: "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=400&auto=format&fit=crop" },
+            { id: 18, name: "Avil 25mg Tablet", price: 12, category: "Allergy", img: "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=400&auto=format&fit=crop" },
+            { id: 19, name: "Cetirizine 10mg", price: 18, category: "Allergy", img: "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=400&auto=format&fit=crop" },
+            { id: 20, name: "Benadryl DR Syrup", price: 125, category: "Respiratory", img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400&auto=format&fit=crop" },
+            { id: 21, name: "Ascoril LS Syrup", price: 110, category: "Respiratory", img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400&auto=format&fit=crop" },
+            { id: 22, name: "Grilinctus Syrup", price: 140, category: "Respiratory", img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400&auto=format&fit=crop" },
+            { id: 23, name: "Vicks Inhaler", price: 65, category: "Respiratory", img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400&auto=format&fit=crop" },
+            { id: 24, name: "Otrivin Nasal Spray", price: 95, category: "Respiratory", img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400&auto=format&fit=crop" },
+            { id: 25, name: "Amlokind 5mg", price: 35, category: "Cardiac & BP", img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?q=80&w=400&auto=format&fit=crop" },
+            { id: 26, name: "Telma 40mg", price: 90, category: "Cardiac & BP", img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?q=80&w=400&auto=format&fit=crop" },
+            { id: 27, name: "Ecosprin 75mg", price: 10, category: "Cardiac & BP", img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?q=80&w=400&auto=format&fit=crop" },
+            { id: 28, name: "Limcee Chewable Vit C", price: 30, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" },
+            { id: 29, name: "Revital H Capsule", price: 310, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" },
+            { id: 30, name: "Becosules Z Capsules", price: 45, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" },
+            { id: 31, name: "Evion 400 (Vit E)", price: 35, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" },
+            { id: 32, name: "Shelcal 500mg", price: 115, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" },
+            { id: 33, name: "Horlicks Women's Plus", price: 450, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" },
+            { id: 34, name: "Betadine Ointment", price: 115, category: "Dermatology", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400&auto=format&fit=crop" },
+            { id: 35, name: "Soframycin Cream", price: 55, category: "Dermatology", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400&auto=format&fit=crop" },
+            { id: 36, name: "Candid Mouth Paint", price: 85, category: "Dermatology", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400&auto=format&fit=crop" },
+            { id: 37, name: "Moiz Cream", price: 290, category: "Dermatology", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400&auto=format&fit=crop" },
+            { id: 38, name: "Itaspor 100mg", price: 155, category: "Dermatology", img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400&auto=format&fit=crop" },
+            { id: 39, name: "Colicaid Drops", price: 105, category: "Baby Care", img: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop" },
+            { id: 40, name: "Johnson's Baby Powder", price: 250, category: "Baby Care", img: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop" },
+            { id: 41, name: "Dexolac Infant Formula", price: 380, category: "Baby Care", img: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop" },
+            { id: 42, name: "Himalaya Diaper Rash", price: 95, category: "Baby Care", img: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop" },
+            { id: 43, name: "Ciplox-D Drops", price: 30, category: "Antibiotics", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 44, name: "Moov Pain Relief Gel", price: 160, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 45, name: "Volini Spray", price: 210, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 46, name: "Crocin 650mg", price: 32, category: "Pain & Fever", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop" },
+            { id: 47, name: "Metrogyl 400mg", price: 22, category: "Gastrointestinal", img: "https://images.unsplash.com/photo-1550573105-095034a7af27?q=80&w=400&auto=format&fit=crop" },
+            { id: 48, name: "Glycomet GP1", price: 95, category: "Diabetes", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 49, name: "Janumet 50/500mg", price: 680, category: "Diabetes", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400&auto=format&fit=crop" },
+            { id: 50, name: "Thyronorm 50mcg", price: 185, category: "Wellness", img: "https://images.unsplash.com/photo-1547489432-cf93fa6c71ee?q=80&w=400&auto=format&fit=crop" }
+        ];
+
+        let inventory = JSON.parse(localStorage.getItem('medical_inventory')) || [...DEFAULT_DATA];
+        let cart = [];
+        let currentFilter = "All";
+        const ADMIN_PASSCODE = "admin123";
+
+        function init() {
+            renderFilters();
+            renderProducts();
+        }
+
+        function renderFilters() {
+            const wrap = document.getElementById('filterWrap');
+            const cats = ["All", ...new Set(inventory.map(i => i.category))];
+            wrap.innerHTML = cats.map(c => `
+                <button onclick="setFilter('${c}')" class="category-btn px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200 ${currentFilter === c ? 'active' : 'bg-white text-slate-400'}">
+                    ${c}
+                </button>
+            `).join('');
+        }
+
+        function setFilter(c) {
+            currentFilter = c;
+            renderFilters();
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const items = currentFilter === "All" ? inventory : inventory.filter(i => i.category === currentFilter);
+            
+            grid.innerHTML = items.map(p => `
+                <div class="product-card bg-white p-6 rounded-[2.5rem] border border-slate-100 flex flex-col group">
+                    <div class="h-48 rounded-[2rem] overflow-hidden mb-6 bg-slate-50 relative">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://via.placeholder.com/400x300?text=Medical+Product'">
+                        <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button onclick="addToCart(${p.id})" class="bg-[#74c365] text-black w-12 h-12 rounded-full flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <span class="text-[9px] font-black uppercase text-[#74c365] tracking-widest mb-2 block">${p.category}</span>
+                        <h3 class="text-slate-800 font-bold leading-tight mb-4 h-10 overflow-hidden text-sm">${p.name}</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-black text-slate-900">Rs.${p.price}</span>
+                            <button onclick="addToCart(${p.id})" class="text-[10px] font-black uppercase tracking-widest text-[#74c365] hover:text-slate-900 transition">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('open');
+        }
+
+        function addToCart(id) {
+            const item = inventory.find(p => p.id === id);
+            const exists = cart.find(c => c.id === id);
+            if (exists) exists.qty++;
+            else cart.push({...item, qty: 1});
+            updateCartUI();
+        }
+
+        function updateCartQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cartItems');
+            const totalEl = document.getElementById('cartTotal');
+            const countEl = document.getElementById('cartCount');
+            
+            let total = 0;
+            let count = 0;
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `<div class="flex flex-col items-center justify-center py-20 text-gray-300 text-center">
+                    <i class="fas fa-shopping-basket text-4xl mb-4"></i>
+                    <p class="text-[10px] font-black uppercase tracking-widest">Your cart is empty</p>
+                </div>`;
+            } else {
+                itemsContainer.innerHTML = cart.map(item => {
+                    total += item.price * item.qty;
+                    count += item.qty;
+                    return `
+                    <div class="flex items-center space-x-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                        <div class="w-16 h-16 rounded-xl overflow-hidden bg-white">
+                            <img src="${item.img}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-[10px] font-black uppercase text-slate-800 line-clamp-1">${item.name}</h4>
+                            <p class="text-xs font-black text-[#74c365]">Rs.${item.price}</p>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <button onclick="updateCartQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-[10px] border border-slate-200"><i class="fas fa-minus"></i></button>
+                                <span class="text-xs font-black">${item.qty}</span>
+                                <button onclick="updateCartQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-[10px] border border-slate-200"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            totalEl.innerText = `Rs.${total}`;
+            countEl.innerText = count;
+            countEl.classList.toggle('hidden', count === 0);
+        }
+
+        function openDevPass() {
+            document.getElementById('passModal').classList.add('active');
+            document.getElementById('devPassInput').focus();
+        }
+
+        function closeDevPass() {
+            document.getElementById('passModal').classList.remove('active');
+            document.getElementById('devPassInput').value = "";
+        }
+
+        function verifyDevPass() {
+            const val = document.getElementById('devPassInput').value;
+            if (val === ADMIN_PASSCODE) {
+                closeDevPass();
+                toggleDevPanel();
+            } else {
+                alert("Incorrect Admin Passcode");
+            }
+        }
+
+        function toggleDevPanel() {
+            const panel = document.getElementById('devPanel');
+            panel.classList.toggle('open');
+            if(panel.classList.contains('open')) renderDevInventory();
+        }
+
+        function renderDevInventory() {
+            const list = document.getElementById('devInventoryList');
+            list.innerHTML = inventory.map(item => `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 flex items-center space-x-4">
+                    <img src="${item.img}" class="w-12 h-12 rounded-lg object-cover bg-slate-100" onerror="this.src='https://via.placeholder.com/50'">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-[10px] font-black text-slate-800 uppercase tracking-tight truncate">${item.name}</p>
+                        <p class="text-[9px] text-[#74c365] font-bold">Rs.${item.price} • ${item.category}</p>
+                    </div>
+                    <button onclick="deleteProduct(${item.id})" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center text-xs hover:bg-red-500 hover:text-white transition-all flex-shrink-0">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('devName').value;
+            const price = document.getElementById('devPrice').value;
+            const cat = document.getElementById('devCat').value;
+            const img = document.getElementById('devImg').value || "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop";
+
+            if (!name || !price) return;
+
+            const newProd = {
+                id: Date.now(),
+                name: name,
+                price: parseFloat(price),
+                category: cat,
+                img: img
+            };
+
+            inventory.unshift(newProd);
+            saveAndRefresh();
+            
+            document.getElementById('devName').value = "";
+            document.getElementById('devPrice').value = "";
+            document.getElementById('devImg').value = "";
+        }
+
+        function deleteProduct(id) {
+            inventory = inventory.filter(i => i.id !== id);
+            saveAndRefresh();
+        }
+
+        function resetToDefaults() {
+            if(confirm("Are you sure? This will remove all your custom products and restore the original 50 medicines.")) {
+                inventory = [...DEFAULT_DATA];
+                localStorage.removeItem('medical_inventory');
+                saveAndRefresh();
+            }
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('medical_inventory', JSON.stringify(inventory));
+            renderDevInventory();
+            renderFilters();
+            renderProducts();
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            const itemsStr = cart.map(i => `• ${i.name} (x${i.qty}) - Rs.${i.price * i.qty}`).join('%0A');
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            const msg = `*NEW MEDICAL ORDER*%0A%0A${itemsStr}%0A%0A*Total: Rs.${total}*%0A_Sent via Adarsh Medical Web_`;
+            window.open(`https://wa.me/916261736546?text=${msg}`, '_blank');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
