@@ -108,6 +108,22 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .input-standard {
+            width: 100%;
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            border: 1px solid transparent;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .input-standard:focus {
+            background: white;
+            border-color: var(--medical-primary);
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -152,8 +168,9 @@
     <section id="hero" class="min-h-screen hero-gradient flex items-center pt-20 overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
             <div class="text-center lg:text-left">
-                <div class="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 mb-6">
-                    <span id="heroBadge" class="text-[10px] font-extrabold text-teal-600 uppercase tracking-[0.2em]">Adarsh Medical: Trust in every dose</span>
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 mb-6">
+                    <span class="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span>
+                    <span id="heroBadge" class="text-[10px] font-extrabold text-teal-600 uppercase tracking-[0.2em]">Home Delivery Available</span>
                 </div>
                 <h1 id="heroTitle" class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-[1.1] mb-8">
                     Your Wellness <br><span class="text-teal-600 italic">Our Priority.</span>
@@ -224,15 +241,15 @@
                 <div class="bg-white p-6 rounded-3xl border border-slate-200">
                     <h4 class="text-xs font-black uppercase tracking-widest mb-6 text-teal-600">New Product / Division</h4>
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <input type="text" id="devName" placeholder="Product Name" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-teal-300">
-                        <input type="number" id="devPrice" placeholder="Real Price (Rs)" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-teal-300">
+                        <input type="text" id="devName" placeholder="Product Name" class="input-standard">
+                        <input type="number" id="devPrice" placeholder="Real Price (Rs)" class="input-standard">
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <input type="text" id="devCat" placeholder="Division (e.g. General Medicine)" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-teal-300">
-                        <input type="number" id="devOffer" placeholder="Offer Price (Optional)" class="bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-teal-300">
+                        <input type="text" id="devCat" placeholder="Division (e.g. General Medicine)" class="input-standard">
+                        <input type="number" id="devOffer" placeholder="Offer Price (Optional)" class="input-standard">
                     </div>
                     <div class="mb-6">
-                        <input type="text" id="devImgUrl" placeholder="Image Link" class="w-full bg-slate-50 p-4 rounded-xl text-sm outline-none border border-transparent focus:border-teal-300">
+                        <input type="text" id="devImgUrl" placeholder="Image Link" class="input-standard">
                     </div>
                     
                     <div id="dropZone" class="drop-zone w-full h-32 rounded-2xl bg-slate-50 flex flex-col items-center justify-center cursor-pointer mb-6 relative overflow-hidden">
@@ -254,11 +271,11 @@
                 <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-6">
                     <h4 class="text-xs font-black uppercase tracking-widest text-teal-600">Company Identity</h4>
                     <div class="grid gap-4">
-                        <input type="text" id="setBrandName" placeholder="Full Brand Name" class="bg-slate-50 p-4 rounded-xl text-sm outline-none">
-                        <input type="text" id="setBrandSub" placeholder="Sub-heading/Location" class="bg-slate-50 p-4 rounded-xl text-sm outline-none">
-                        <input type="text" id="setWa" placeholder="WhatsApp Number" class="bg-slate-50 p-4 rounded-xl text-sm outline-none">
-                        <input type="text" id="setMap" placeholder="Google Maps Link" class="bg-slate-50 p-4 rounded-xl text-sm outline-none">
-                        <input type="text" id="setIg" placeholder="Instagram URL" class="bg-slate-50 p-4 rounded-xl text-sm outline-none">
+                        <input type="text" id="setBrandName" placeholder="Full Brand Name" class="input-standard">
+                        <input type="text" id="setBrandSub" placeholder="Sub-heading/Location" class="input-standard">
+                        <input type="text" id="setWa" placeholder="WhatsApp Number" class="input-standard">
+                        <input type="text" id="setMap" placeholder="Google Maps Link" class="input-standard">
+                        <input type="text" id="setIg" placeholder="Instagram URL" class="input-standard">
                     </div>
                 </div>
                 <button onclick="saveSiteSettings()" class="w-full btn-medical py-5 rounded-2xl">Save Changes</button>
@@ -269,16 +286,52 @@
     <!-- Cart Drawer -->
     <div id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white z-[1000] shadow-2xl flex flex-col">
         <div class="p-6 bg-teal-600 text-white flex justify-between items-center">
-            <h3 class="text-xs font-black uppercase tracking-widest">Checkout Adarsh</h3>
-            <button onclick="toggleCart()" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-times"></i></button>
+            <h3 class="text-xs font-black uppercase tracking-widest">Order from Adarsh</h3>
+            <button onclick="toggleCart()" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30"><i class="fas fa-times"></i></button>
         </div>
-        <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+        
+        <div class="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
+            <!-- Items -->
+            <div id="cartItems" class="space-y-4"></div>
+
+            <!-- Prescription Section -->
+            <div class="bg-teal-50 p-6 rounded-[2rem] border border-teal-100">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-4 flex items-center">
+                    <i class="fas fa-file-prescription mr-2"></i> Upload Prescription
+                </h4>
+                <div onclick="document.getElementById('rxInput').click()" class="cursor-pointer border-2 border-dashed border-teal-200 rounded-2xl h-24 flex flex-col items-center justify-center bg-white hover:bg-teal-100 transition-colors">
+                    <input type="file" id="rxInput" class="hidden" accept="image/*" onchange="handleRxUpload(event)">
+                    <div id="rxPrompt" class="text-center">
+                        <i class="fas fa-camera text-teal-300 mb-1"></i>
+                        <p class="text-[9px] font-bold text-teal-500">Tap to attach photo</p>
+                    </div>
+                    <div id="rxPreview" class="hidden flex items-center space-x-2">
+                        <i class="fas fa-check-circle text-teal-500"></i>
+                        <p class="text-[9px] font-bold text-teal-600">Prescription Attached</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Info -->
+            <div class="space-y-4">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Delivery Details</h4>
+                <input type="text" id="cartUserName" placeholder="Full Name" class="input-standard">
+                <input type="tel" id="cartUserPhone" placeholder="WhatsApp Number" class="input-standard">
+                <textarea id="cartUserAddress" placeholder="Full Delivery Address" rows="3" class="input-standard resize-none"></textarea>
+            </div>
+        </div>
+
         <div class="p-6 bg-slate-50 border-t">
             <div class="flex justify-between items-center mb-6">
-                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Payable</span>
+                <div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Payable</span>
+                    <p class="text-[8px] text-teal-600 font-bold uppercase">+ Free Home Delivery</p>
+                </div>
                 <span id="cartTotal" class="text-3xl font-black text-slate-900 tracking-tighter">Rs.0</span>
             </div>
-            <button onclick="checkout()" class="w-full btn-medical py-5 rounded-2xl text-sm">Order via WhatsApp</button>
+            <button onclick="checkout()" class="w-full btn-medical py-5 rounded-2xl text-sm flex items-center justify-center">
+                <i class="fab fa-whatsapp mr-2 text-lg"></i> Confirm via WhatsApp
+            </button>
         </div>
     </div>
 
@@ -286,9 +339,19 @@
     <footer class="bg-slate-50 py-16 border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
-                <div class="max-w-xs">
+                <div class="max-w-sm">
                     <h2 class="footerBrand text-xl font-black text-slate-800 tracking-tighter mb-4">ADARSH MEDICAL</h2>
                     <p class="text-slate-500 text-sm leading-relaxed mb-6">Serving across multiple locations with guaranteed authenticity and professional healthcare standards.</p>
+                    
+                    <!-- Address Section -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 mb-6 flex items-start space-x-3">
+                        <i class="fas fa-map-marker-alt text-teal-500 mt-1"></i>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Store Address</p>
+                            <p class="text-xs font-bold text-slate-700">Adarsh Medical Store, Main Road, [Your Local Area/City Name]</p>
+                        </div>
+                    </div>
+
                     <div class="flex space-x-4">
                         <a id="footerIg" href="#" target="_blank" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-teal-600 transition"><i class="fab fa-instagram"></i></a>
                         <a id="footerWa" href="#" target="_blank" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-teal-600 transition"><i class="fab fa-whatsapp"></i></a>
@@ -296,17 +359,18 @@
                 </div>
                 <div class="grid grid-cols-2 gap-12">
                     <div>
-                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Navigation</h4>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Services</h4>
                         <ul class="space-y-4 text-sm font-medium text-slate-600">
-                            <li><a href="#hero" class="hover:text-teal-600">Adarsh Home</a></li>
-                            <li><a href="#store" class="hover:text-teal-600">Division Catalog</a></li>
+                            <li class="flex items-center"><i class="fas fa-truck text-teal-500 mr-2 text-[10px]"></i> Home Delivery</li>
+                            <li class="flex items-center"><i class="fas fa-file-medical text-teal-500 mr-2 text-[10px]"></i> Prescriptions</li>
+                            <li class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2 text-[10px]"></i> Open Daily</li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Legal</h4>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Quick Links</h4>
                         <ul class="space-y-4 text-sm font-medium text-slate-600">
-                            <li><a href="#" class="hover:text-teal-600">Pharmacy License</a></li>
-                            <li><a href="#" class="hover:text-teal-600">Verified Stocks</a></li>
+                            <li><a href="#hero" class="hover:text-teal-600">Adarsh Home</a></li>
+                            <li><a href="#store" class="hover:text-teal-600">Medicine Catalog</a></li>
                         </ul>
                     </div>
                 </div>
@@ -334,17 +398,18 @@
             waNumber: "916261736546",
             mapUrl: "https://maps.app.goo.gl/wc7rduwArrNY4gAN8",
             igUrl: "https://instagram.com/adarsh_medical",
-            heroBadge: "Adarsh Medical: Trust in every dose",
+            heroBadge: "Home Delivery Available",
             heroTitle: "Premium Medical Hub.",
             heroDesc: "The most trusted name in pharmaceuticals across multiple locations. We deliver genuine health care products right to your home.",
             heroImg: "https://images.unsplash.com/photo-1586015555751-63bb77f4322a?q=80&w=1000"
         };
 
-        let inventory = JSON.parse(localStorage.getItem('adarsh_inv_v3')) || [...DEFAULT_INVENTORY];
-        let siteSettings = JSON.parse(localStorage.getItem('adarsh_set_v3')) || {...DEFAULT_SETTINGS};
+        let inventory = JSON.parse(localStorage.getItem('adarsh_inv_v4')) || [...DEFAULT_INVENTORY];
+        let siteSettings = JSON.parse(localStorage.getItem('adarsh_set_v4')) || {...DEFAULT_SETTINGS};
         let cart = [];
         let currentFilter = "All";
         let uploadedImg = "";
+        let prescriptionAttached = false;
         const ADMIN_PASS = "admin123";
 
         function init() {
@@ -379,7 +444,7 @@
             siteSettings.waNumber = document.getElementById('setWa').value;
             siteSettings.mapUrl = document.getElementById('setMap').value;
             siteSettings.igUrl = document.getElementById('setIg').value;
-            localStorage.setItem('adarsh_set_v3', JSON.stringify(siteSettings));
+            localStorage.setItem('adarsh_set_v4', JSON.stringify(siteSettings));
             applySettings();
             toggleDevPanel();
         }
@@ -431,11 +496,23 @@
         function openDevPass() { document.getElementById('passModal').classList.add('active'); }
         function closeDevPass() { document.getElementById('passModal').classList.remove('active'); document.getElementById('devPassInput').value=""; }
         function verifyDevPass() { if(document.getElementById('devPassInput').value === ADMIN_PASS) { closeDevPass(); toggleDevPanel(); } else { alert("Wrong Passcode"); } }
+        
         function switchTab(t) {
             document.getElementById('panel-inventory').classList.toggle('hidden', t!=='inventory');
             document.getElementById('panel-settings').classList.toggle('hidden', t!=='settings');
-            document.getElementById('tab-inventory').className = t==='inventory' ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
-            document.getElementById('tab-settings').className = t==='settings' ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
+            const tabs = ['inventory', 'settings'];
+            tabs.forEach(tab => {
+                const el = document.getElementById(`tab-${tab}`);
+                el.className = t === tab ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
+            });
+        }
+
+        function handleRxUpload(e) {
+            if(e.target.files.length > 0) {
+                prescriptionAttached = true;
+                document.getElementById('rxPrompt').classList.add('hidden');
+                document.getElementById('rxPreview').classList.remove('hidden');
+            }
         }
 
         function setupDrop() {
@@ -468,7 +545,7 @@
         }
 
         function saveAndRefresh() {
-            localStorage.setItem('adarsh_inv_v3', JSON.stringify(inventory));
+            localStorage.setItem('adarsh_inv_v4', JSON.stringify(inventory));
             renderDevInv(); renderFilters(); renderProducts();
         }
 
@@ -499,20 +576,20 @@
             const container = document.getElementById('cartItems');
             let total = 0;
             let count = 0;
-            if(cart.length === 0) container.innerHTML = '<p class="text-center py-10 text-slate-300 text-[10px] font-black uppercase">Cart Empty</p>';
+            if(cart.length === 0) container.innerHTML = '<p class="text-center py-10 text-slate-300 text-[10px] font-black uppercase">Your cart is empty</p>';
             else container.innerHTML = cart.map(i => {
                 total += i.price * i.qty;
                 count += i.qty;
-                return `<div class="flex items-center space-x-4 bg-slate-50 p-3 rounded-2xl">
+                return `<div class="flex items-center space-x-4 bg-white p-3 rounded-2xl border border-slate-100">
                     <img src="${i.img}" class="w-12 h-12 rounded-xl object-cover">
                     <div class="flex-1">
                         <h4 class="text-[9px] font-black uppercase truncate w-32">${i.name}</h4>
                         <p class="text-xs font-black text-teal-600">Rs.${i.price}</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="changeQty(${i.id}, -1)" class="w-6 h-6 bg-white border border-slate-200 rounded text-[10px]">-</button>
+                        <button onclick="changeQty(${i.id}, -1)" class="w-6 h-6 bg-slate-100 rounded text-[10px]">-</button>
                         <span class="text-xs font-black">${i.qty}</span>
-                        <button onclick="changeQty(${i.id}, 1)" class="w-6 h-6 bg-white border border-slate-200 rounded text-[10px]">+</button>
+                        <button onclick="changeQty(${i.id}, 1)" class="w-6 h-6 bg-slate-100 rounded text-[10px]">+</button>
                     </div>
                 </div>`;
             }).join('');
@@ -529,10 +606,28 @@
         }
 
         function checkout() {
-            if(cart.length === 0) return;
-            const items = cart.map(i=>`* ${i.name} (x${i.qty}) - Rs.${i.price * i.qty}`).join('%0A');
+            if(cart.length === 0) {
+                alert("Please add items to cart first.");
+                return;
+            }
+            const userName = document.getElementById('cartUserName').value;
+            const userPhone = document.getElementById('cartUserPhone').value;
+            const userAddress = document.getElementById('cartUserAddress').value;
+
+            if(!userName || !userPhone || !userAddress) {
+                alert("Please fill in your name, number, and delivery address.");
+                return;
+            }
+
+            const items = cart.map(i=>`• ${i.name} (x${i.qty})`).join('%0A');
             const total = cart.reduce((s,i)=>s+(i.price*i.qty),0);
-            const msg = `*NEW ORDER - ADARSH MEDICAL*%0A%0A${items}%0A%0A*Total: Rs.${total}*`;
+            
+            let msg = `*NEW ORDER FROM ADARSH MEDICAL*%0A%0A`;
+            msg += `*Customer Details:*%0AName: ${userName}%0APhone: ${userPhone}%0AAddress: ${userAddress}%0A%0A`;
+            msg += `*Order Summary:*%0A${items}%0A%0A`;
+            msg += `*Total Amount: Rs.${total}*%0A%0A`;
+            if(prescriptionAttached) msg += `_Note: I am attaching my prescription photo now..._`;
+
             window.open(`https://wa.me/${siteSettings.waNumber}?text=${msg}`, '_blank');
         }
 
