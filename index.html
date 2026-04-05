@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adarsh Medical | Premium Pharmacy</title>
+    <title id="pageTitle">Adarsh Medical | Premium Pharmacy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap');
+        
         :root {
             --medical-primary: #0d9488;
             --medical-secondary: #0f766e;
@@ -126,42 +127,27 @@
             box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
         }
 
-        /* Checkbox styling */
-        .checkbox-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            cursor: pointer;
-            user-select: none;
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
         }
-        .checkbox-custom {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            flex-shrink: 0;
-            margin-top: 2px;
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
         }
-        input:checked + .checkbox-custom {
-            background: var(--medical-primary);
-            border-color: var(--medical-primary);
-        }
-        input:checked + .checkbox-custom i {
-            display: block;
-        }
-        .checkbox-custom i {
-            display: none;
-            color: white;
-            font-size: 10px;
+        .search-input {
+            padding-left: 48px !important;
         }
     </style>
 </head>
 <body class="antialiased">
 
+    <!-- Nav -->
     <nav class="fixed top-0 w-full z-[100] glass-nav px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -181,10 +167,11 @@
                 </div>
                 
                 <div class="flex items-center space-x-5">
-                    <a id="mapLink" href="#" target="_blank" class="text-slate-400 hover:text-teal-600 flex flex-col items-center transition">
+                    <a id="mapLink" href="https://maps.app.goo.gl/wc7rduwArrNY4gAN8" target="_blank" class="text-slate-400 hover:text-teal-600 flex flex-col items-center transition">
                         <i class="fas fa-map-marker-alt text-lg"></i>
                         <span class="text-[8px] font-bold uppercase mt-1">Location</span>
                     </a>
+
                     <button onclick="toggleCart()" class="relative group">
                         <div class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 group-hover:bg-teal-600 group-hover:text-white transition-all">
                             <i class="fas fa-shopping-cart text-xs"></i>
@@ -196,6 +183,7 @@
         </div>
     </nav>
 
+    <!-- Hero -->
     <section id="hero" class="min-h-screen hero-gradient flex items-center pt-20 overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
             <div class="text-center lg:text-left">
@@ -209,19 +197,20 @@
                 <p id="heroDesc" class="text-slate-500 text-lg md:text-xl max-w-xl mb-12 leading-relaxed font-medium">
                     At Adarsh Medical, we bridge the gap between quality healthcare and accessibility. Shop genuine medicines from your trusted local expert.
                 </p>
-                <div class="flex flex-col sm:row gap-4 justify-center lg:justify-start">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                     <a href="#store" class="btn-medical px-10 py-5 rounded-2xl text-xs shadow-xl shadow-teal-600/10 text-center">Shop Now</a>
                     <a id="heroWaLink" href="#" class="bg-white border border-slate-200 text-slate-600 px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-slate-50 transition-all text-center">Chat with Pharmacist</a>
                 </div>
             </div>
             <div class="hidden lg:block relative">
                 <div class="relative z-10 floating-badge">
-                    <img id="heroImg" src="https://images.unsplash.com/photo-1586015555751-63bb77f4322a?q=80&w=1000" class="rounded-[3rem] shadow-2xl border-8 border-white object-cover aspect-[4/5] w-full max-w-md mx-auto" alt="Adarsh Medical Store">
+                    <img id="heroImg" src="https://images.unsplash.com/photo-1586015555751-63bb77f4322a?q=80&w=1000&auto=format&fit=crop" class="rounded-[3rem] shadow-2xl border-8 border-white object-cover aspect-[4/5] w-full max-w-md mx-auto" alt="Adarsh Medical Store">
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Store Section -->
     <section id="store" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-8">
@@ -229,14 +218,17 @@
                     <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4">Adarsh <span class="text-teal-600">Inventory.</span></h2>
                     <p class="text-slate-500 font-medium">Explore various medical divisions and seasonal offers.</p>
                 </div>
-                <div class="w-full md:w-80 relative">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search medicine name..." class="input-standard pl-12 shadow-sm">
+                <div class="search-container w-full md:w-80">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search medicine name..." class="input-standard search-input shadow-sm">
                 </div>
             </div>
 
-            <div id="filterWrap" class="w-full flex overflow-x-auto gap-2 pb-6 mb-10 no-scrollbar"></div>
-            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[400px]"></div>
+            <div id="filterWrap" class="w-full flex overflow-x-auto gap-2 pb-6 mb-10 no-scrollbar">
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[400px]">
+            </div>
             
             <div id="emptySearch" class="hidden py-20 text-center">
                 <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
@@ -248,47 +240,50 @@
         </div>
     </section>
 
+    <!-- Passcode Modal -->
     <div id="passModal" class="modal-overlay fixed inset-0 z-[2000] items-center justify-center">
-        <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl w-full max-sm:mx-4 max-w-sm border border-slate-100 text-center">
+        <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl w-full max-sm:mx-4 max-w-sm border border-slate-100">
             <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <i class="fas fa-user-shield text-2xl"></i>
             </div>
-            <h3 class="text-slate-800 font-black uppercase tracking-widest mb-6">Staff Access</h3>
+            <h3 class="text-slate-800 text-center font-black uppercase tracking-widest mb-6">Adarsh Admin</h3>
             <input type="password" id="devPassInput" placeholder="Passcode" class="w-full bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center text-xl mb-4 focus:border-teal-500 outline-none tracking-widest">
             <button onclick="verifyDevPass()" class="w-full btn-medical py-5 rounded-2xl">Access Console</button>
             <button onclick="closeDevPass()" class="w-full mt-4 text-slate-400 text-[10px] font-black uppercase tracking-widest">Close</button>
         </div>
     </div>
 
+    <!-- Management Console -->
     <div id="devPanel" class="fixed top-0 right-0 w-full max-w-3xl h-full bg-slate-50 z-[1500] shadow-2xl flex flex-col">
         <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <i class="fas fa-tools text-teal-400"></i>
-                <h3 class="text-xs font-black uppercase tracking-widest">Store Management</h3>
+                <h3 class="text-xs font-black uppercase tracking-widest">Adarsh Medical Management</h3>
             </div>
             <button onclick="toggleDevPanel()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-red-500 transition-all"><i class="fas fa-times"></i></button>
         </div>
         
         <div class="flex-1 overflow-y-auto">
             <div class="flex bg-white border-b sticky top-0 z-10">
-                <button onclick="switchTab('inventory')" id="tab-inventory" class="flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600">Inventory</button>
-                <button onclick="switchTab('settings')" id="tab-settings" class="flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400">Branding</button>
+                <button onclick="switchTab('inventory')" class="flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" id="tab-inventory">Inventory</button>
+                <button onclick="switchTab('settings')" class="flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400" id="tab-settings">Branding & Links</button>
             </div>
 
             <div id="panel-inventory" class="p-8 space-y-8">
                 <div class="bg-white p-6 rounded-3xl border border-slate-200">
-                    <h4 class="text-xs font-black uppercase tracking-widest mb-6 text-teal-600">New Product</h4>
+                    <h4 class="text-xs font-black uppercase tracking-widest mb-6 text-teal-600">New Product / Division</h4>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <input type="text" id="devName" placeholder="Product Name" class="input-standard">
-                        <input type="number" id="devPrice" placeholder="Price (Rs)" class="input-standard">
-                    </div>
-                    <div class="mb-4">
-                        <textarea id="devDesc" placeholder="Description (Dosage, usage, etc.)" class="input-standard resize-none" rows="2"></textarea>
+                        <input type="number" id="devPrice" placeholder="Real Price (Rs)" class="input-standard">
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <input type="text" id="devCat" placeholder="Division (General, etc.)" class="input-standard">
+                        <input type="text" id="devCat" placeholder="Division (e.g. General Medicine)" class="input-standard">
                         <input type="number" id="devOffer" placeholder="Offer Price (Optional)" class="input-standard">
                     </div>
+                    <div class="mb-6">
+                        <input type="text" id="devImgUrl" placeholder="Image Link" class="input-standard">
+                    </div>
+                    
                     <div id="dropZone" class="drop-zone w-full h-32 rounded-2xl bg-slate-50 flex flex-col items-center justify-center cursor-pointer mb-6 relative overflow-hidden">
                         <input type="file" id="fileInput" class="hidden" accept="image/*">
                         <div id="dropPrompt" class="text-center">
@@ -297,53 +292,60 @@
                         </div>
                         <img id="imagePreview" class="absolute inset-0 w-full h-full object-cover hidden">
                     </div>
-                    <button onclick="addNewProduct()" class="w-full btn-medical py-4 rounded-xl text-xs">Publish Item</button>
+
+                    <button onclick="addNewProduct()" class="w-full btn-medical py-4 rounded-xl text-xs">Publish to Store</button>
                 </div>
+
                 <div id="devInventoryList" class="space-y-3"></div>
             </div>
 
             <div id="panel-settings" class="hidden p-8 space-y-8">
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4">
-                    <h4 class="text-xs font-black uppercase tracking-widest text-teal-600">Store Links</h4>
-                    <input type="text" id="setBrandName" placeholder="Brand Name" class="input-standard">
-                    <input type="text" id="setWa" placeholder="WhatsApp Number (With Country Code)" class="input-standard">
-                    <input type="text" id="setMap" placeholder="Maps Link" class="input-standard">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-6">
+                    <h4 class="text-xs font-black uppercase tracking-widest text-teal-600">Company Identity</h4>
+                    <div class="grid gap-4">
+                        <input type="text" id="setBrandName" placeholder="Full Brand Name" class="input-standard">
+                        <input type="text" id="setBrandSub" placeholder="Sub-heading/Location" class="input-standard">
+                        <input type="text" id="setWa" placeholder="WhatsApp Number" class="input-standard">
+                        <input type="text" id="setMap" placeholder="Google Maps Link" class="input-standard">
+                        <input type="text" id="setIg" placeholder="Instagram URL" class="input-standard">
+                    </div>
                 </div>
                 <button onclick="saveSiteSettings()" class="w-full btn-medical py-5 rounded-2xl">Save Changes</button>
             </div>
         </div>
     </div>
 
+    <!-- Cart Drawer -->
     <div id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white z-[1000] shadow-2xl flex flex-col">
         <div class="p-6 bg-teal-600 text-white flex justify-between items-center">
-            <h3 class="text-xs font-black uppercase tracking-widest">Your Order</h3>
+            <h3 class="text-xs font-black uppercase tracking-widest">Order from Adarsh</h3>
             <button onclick="toggleCart()" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30"><i class="fas fa-times"></i></button>
         </div>
         
         <div class="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
             <div id="cartItems" class="space-y-4"></div>
 
-            <!-- Modified Prescription Section -->
             <div class="bg-teal-50 p-6 rounded-[2rem] border border-teal-100">
                 <h4 class="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-4 flex items-center">
-                    <i class="fas fa-file-prescription mr-2"></i> Prescription Handling
+                    <i class="fas fa-file-prescription mr-2"></i> Upload Prescription
                 </h4>
-                <label class="checkbox-container">
-                    <input type="checkbox" id="rxCheckbox" class="hidden" onchange="toggleRxStatus()">
-                    <div class="checkbox-custom">
-                        <i class="fas fa-check"></i>
+                <div onclick="document.getElementById('rxInput').click()" class="cursor-pointer border-2 border-dashed border-teal-200 rounded-2xl h-24 flex flex-col items-center justify-center bg-white hover:bg-teal-100 transition-colors">
+                    <input type="file" id="rxInput" class="hidden" accept="image/*" onchange="handleRxUpload(event)">
+                    <div id="rxPrompt" class="text-center">
+                        <i class="fas fa-camera text-teal-300 mb-1"></i>
+                        <p class="text-[9px] font-bold text-teal-500">Tap to attach photo</p>
                     </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-700">I will send my prescription on WhatsApp</p>
-                        <p class="text-[9px] text-slate-500 mt-1 leading-relaxed">Check this if your order contains prescription-only medicines. You can drop the image in our chat after checkout.</p>
+                    <div id="rxPreview" class="hidden flex items-center space-x-2">
+                        <i class="fas fa-check-circle text-teal-500"></i>
+                        <p class="text-[9px] font-bold text-teal-600">Prescription Attached</p>
                     </div>
-                </label>
+                </div>
             </div>
 
             <div class="space-y-4">
-                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Delivery Information</h4>
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Delivery Details</h4>
                 <input type="text" id="cartUserName" placeholder="Full Name" class="input-standard">
-                <input type="tel" id="cartUserPhone" placeholder="Mobile Number" class="input-standard">
+                <input type="tel" id="cartUserPhone" placeholder="WhatsApp Number" class="input-standard">
                 <textarea id="cartUserAddress" placeholder="Full Delivery Address" rows="3" class="input-standard resize-none"></textarea>
             </div>
         </div>
@@ -351,30 +353,33 @@
         <div class="p-6 bg-slate-50 border-t">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Grand Total</span>
-                    <p class="text-[8px] text-teal-600 font-bold uppercase">+ Free Delivery</p>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Payable</span>
+                    <p class="text-[8px] text-teal-600 font-bold uppercase">+ Free Home Delivery</p>
                 </div>
                 <span id="cartTotal" class="text-3xl font-black text-slate-900 tracking-tighter">Rs.0</span>
             </div>
             <button onclick="checkout()" class="w-full btn-medical py-5 rounded-2xl text-sm flex items-center justify-center">
-                <i class="fab fa-whatsapp mr-2 text-lg"></i> Confirm on WhatsApp
+                <i class="fab fa-whatsapp mr-2 text-lg"></i> Confirm via WhatsApp
             </button>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="bg-slate-50 py-16 border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
                 <div class="max-w-sm">
                     <h2 class="footerBrand text-xl font-black text-slate-800 tracking-tighter mb-4">ADARSH MEDICAL</h2>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-6">Trusted pharmaceuticals across multiple locations with guaranteed professional healthcare standards.</p>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">Serving across multiple locations with guaranteed authenticity and professional healthcare standards.</p>
+                    
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 mb-6 flex items-start space-x-3">
                         <i class="fas fa-map-marker-alt text-teal-500 mt-1"></i>
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Store Address</p>
-                            <p class="text-xs font-bold text-slate-700">Bus stand, Chandangaon, Chhindwara, MP 480001</p>
+                            <p class="text-xs font-bold text-slate-700">Adarsh Medical Store, bus stand, Chandangaon, Chhindwara, Madhya Pradesh 480001</p>
                         </div>
                     </div>
+
                     <div class="flex space-x-4">
                         <a id="footerIg" href="#" target="_blank" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-teal-600 transition"><i class="fab fa-instagram"></i></a>
                         <a id="footerWa" href="#" target="_blank" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-teal-600 transition"><i class="fab fa-whatsapp"></i></a>
@@ -382,82 +387,123 @@
                 </div>
                 <div class="grid grid-cols-2 gap-12">
                     <div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Services</h4>
+                        <ul class="space-y-4 text-sm font-medium text-slate-600">
+                            <li class="flex items-center"><i class="fas fa-truck text-teal-500 mr-2 text-[10px]"></i> Home Delivery</li>
+                            <li class="flex items-center"><i class="fas fa-file-medical text-teal-500 mr-2 text-[10px]"></i> Prescriptions</li>
+                            <li class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2 text-[10px]"></i> Open Daily</li>
+                        </ul>
+                    </div>
+                    <div>
                         <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Quick Links</h4>
                         <ul class="space-y-4 text-sm font-medium text-slate-600">
-                            <li><a href="#hero" class="hover:text-teal-600">Home</a></li>
-                            <li><a href="#store" class="hover:text-teal-600">Medicines</a></li>
+                            <li><a href="#hero" class="hover:text-teal-600">Adarsh Home</a></li>
+                            <li><a href="#store" class="hover:text-teal-600">Medicine Catalog</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="pt-8 border-t border-slate-200 flex justify-between items-center">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">© 2026 Adarsh Medical Store</p>
-                <button onclick="openDevPass()" class="text-slate-400 hover:text-teal-600 text-[9px] font-black uppercase flex items-center gap-2">
-                    <i class="fas fa-cog"></i> Staff Login
+            <div class="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">© 2024 Adarsh Medical Store. All Rights Reserved.</p>
+                <button onclick="openDevPass()" class="flex items-center space-x-2 text-slate-400 hover:text-teal-600 bg-white px-4 py-2 rounded-full border border-slate-200">
+                    <i class="fas fa-cog"></i>
+                    <span class="text-[9px] font-black uppercase">Staff Login</span>
                 </button>
             </div>
         </div>
     </footer>
 
     <script>
-        // 1. Connection Settings
-          const firebaseConfig = {
-              databaseURL: "https://adarsh-medical-default-rtdb.asia-southeast1.firebasedatabase.app/"
-          };
+        // Storage Keys
+        const firebaseConfig = {
+   
+            databaseURL: "https://adarsh-medical-default-rtdb.asia-southeast1.firebasedatabase.app/" 
 
-        // 2. Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
-          const db = firebase.database();
+        };
+        firebase.initializeApp(firebaseConfig);
 
-        // 3. State Variables (Remove localStorage lines)
-          let inventory = [];
-          let siteSettings = {};
-          let cart = [];
-          const ADMIN_PASS = "admin123";
+        const db = firebase.database();
 
-        function init() {
-          // Listen for Settings changes
-          db.ref('settings').on('value', (snapshot) => {
-              const data = snapshot.val();
-              siteSettings = data || DEFAULT_SETTINGS;
-              applySettings();
-        });
+        const DEFAULT_INVENTORY = [
+            { id: 1, name: "Calpol 650mg", price: 32, offerPrice: 28, category: "General Medicine", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400" },
+            { id: 2, name: "Multivitamin Gold", price: 450, offerPrice: 399, category: "Supplements", img: "https://images.unsplash.com/photo-1614859324967-bdf471bba774?q=80&w=400" },
+            { id: 3, name: "Dettol Liquid 500ml", price: 210, offerPrice: 0, category: "Antiseptic", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400" }
+        ];
 
-         // Listen for Inventory changes
-          db.ref('inventory').on('value', (snapshot) => {
-              const data = snapshot.val();
-         // If database is empty, use defaults, otherwise use database data
-          inventory = data ? Object.values(data) : [...DEFAULT_INVENTORY];
-          renderFilters();
-          renderProducts();
-          if(document.getElementById('devPanel').classList.contains('open')) renderDevInv();
-        });
+        const DEFAULT_SETTINGS = {
+            brandName: "ADARSH MEDICAL",
+            brandSub: "Multi-Location Excellence",
+            waNumber: "916261736546",
+            mapUrl: "https://maps.app.goo.gl/wc7rduwArrNY4gAN8",
+            igUrl: "https://instagram.com/adarsh_medical",
+            heroBadge: "Home Delivery Available",
+            heroTitle: "Premium Medical Hub.",
+            heroDesc: "The most trusted name in pharmaceuticals across multiple locations. We deliver genuine health care products right to your home.",
+            heroImg: "https://images.unsplash.com/photo-1586015555751-63bb77f4322a?q=80&w=1000"
+        };
 
-        setupDrop();
-     }
+        // Load existing or default
+        let inventory = []; 
+
+        let siteSettings = {};
+
+        let cart = [];
+        const ADMIN_PASS = "admin123";
+        let currentFilter = "All";
+        let searchQuery = "";
+        let uploadedImg = "";
+        let prescriptionAttached = false;
+
+        function init() { 
+            db.ref('settings').on('value', (snapshot) => {
+                const data = snapshot.val();
+                siteSettings = data || DEFAULT_SETTINGS;
+                applySettings();
+            });
+
+            db.ref('inventory').on('value', (snapshot) => {
+                const data = snapshot.val();
+                inventory = data ? Object.values(data) : [...DEFAULT_INVENTORY];
+                renderFilters();
+                renderProducts();
+                if(document.getElementById('devPanel').classList.contains('open')) renderDevInv();
+            });
+            setupDrop();
+        }
 
         function applySettings() {
+            // Update UI elements
             document.querySelectorAll('.footerBrand').forEach(el => el.innerText = siteSettings.brandName);
             document.getElementById('brandName').innerText = siteSettings.brandName;
             document.getElementById('brandSub').innerText = siteSettings.brandSub;
+            document.getElementById('heroBadge').innerText = siteSettings.heroBadge;
+            document.getElementById('heroTitle').innerText = siteSettings.heroTitle;
+            document.getElementById('heroDesc').innerText = siteSettings.heroDesc;
+            document.getElementById('heroImg').src = siteSettings.heroImg;
             document.getElementById('mapLink').href = siteSettings.mapUrl;
             document.getElementById('heroWaLink').href = `https://wa.me/${siteSettings.waNumber}`;
             document.getElementById('footerIg').href = siteSettings.igUrl;
             document.getElementById('footerWa').href = `https://wa.me/${siteSettings.waNumber}`;
             
+            // Sync Admin form fields
             document.getElementById('setBrandName').value = siteSettings.brandName;
+            document.getElementById('setBrandSub').value = siteSettings.brandSub;
             document.getElementById('setWa').value = siteSettings.waNumber;
             document.getElementById('setMap').value = siteSettings.mapUrl;
+            document.getElementById('setIg').value = siteSettings.igUrl;
         }
 
         function saveSiteSettings() {
             siteSettings.brandName = document.getElementById('setBrandName').value;
+            siteSettings.brandSub = document.getElementById('setBrandSub').value;
             siteSettings.waNumber = document.getElementById('setWa').value;
             siteSettings.mapUrl = document.getElementById('setMap').value;
-   
-           // Push settings to Firebase
+            siteSettings.igUrl = document.getElementById('setIg').value;
+            
             db.ref('settings').set(siteSettings).then(() => {
+ 
                 toggleDevPanel();
+
             });
         }
 
@@ -470,16 +516,31 @@
             `).join('');
         }
 
-        function setFilter(c) { currentFilter = c; renderFilters(); renderProducts(); }
-        function handleSearch() { searchQuery = document.getElementById('searchInput').value.toLowerCase(); renderProducts(); }
+        function setFilter(c) {
+            currentFilter = c;
+            renderFilters();
+            renderProducts();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            renderProducts();
+        }
 
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             const empty = document.getElementById('emptySearch');
-            const items = inventory.filter(i => (currentFilter === "All" || i.category === currentFilter) && i.name.toLowerCase().includes(searchQuery));
+            
+            const items = inventory.filter(i => {
+                const matchesFilter = (currentFilter === "All" || i.category === currentFilter);
+                const matchesSearch = i.name.toLowerCase().includes(searchQuery);
+                return matchesFilter && matchesSearch;
+            });
 
-            if (items.length === 0) { grid.innerHTML = ""; empty.classList.remove('hidden'); }
-            else {
+            if (items.length === 0) {
+                grid.innerHTML = "";
+                empty.classList.remove('hidden');
+            } else {
                 empty.classList.add('hidden');
                 grid.innerHTML = items.map(p => {
                     const hasOffer = p.offerPrice > 0 && p.offerPrice < p.price;
@@ -490,15 +551,14 @@
                             <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-105 transition-all">
                         </div>
                         <div class="flex-1 flex flex-col">
-                            <span class="text-[8px] font-black uppercase text-teal-600 mb-1">${p.category}</span>
-                            <h3 class="text-slate-800 font-bold leading-tight text-sm">${p.name}</h3>
-                            <p class="text-[10px] text-slate-400 mt-1 line-clamp-2 h-8">${p.desc || ''}</p>
-                            <div class="mt-4 flex items-center justify-between">
+                            <span class="text-[8px] font-black uppercase text-teal-600 tracking-widest mb-1">${p.category}</span>
+                            <h3 class="text-slate-800 font-bold leading-tight mb-4 h-10 overflow-hidden text-sm">${p.name}</h3>
+                            <div class="mt-auto flex items-center justify-between">
                                 <div class="flex flex-col">
                                     ${hasOffer ? `<span class="text-[10px] text-slate-400 line-through">Rs.${p.price}</span>` : ''}
                                     <span class="text-lg font-black text-slate-900">Rs.${hasOffer ? p.offerPrice : p.price}</span>
                                 </div>
-                                <button onclick="addToCart(${p.id})" class="w-10 h-10 bg-teal-50 text-teal-600 rounded-xl hover:bg-teal-600 hover:text-white transition-all">
+                                <button onclick="addToCart(${p.id})" class="w-10 h-10 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center hover:bg-teal-600 hover:text-white transition-all">
                                     <i class="fas fa-plus text-xs"></i>
                                 </button>
                             </div>
@@ -508,117 +568,161 @@
             }
         }
 
+        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); }
+        function toggleDevPanel() { document.getElementById('devPanel').classList.toggle('open'); if(document.getElementById('devPanel').classList.contains('open')) renderDevInv(); }
+        function openDevPass() { document.getElementById('passModal').classList.add('active'); }
+        function closeDevPass() { document.getElementById('passModal').classList.remove('active'); document.getElementById('devPassInput').value=""; }
+        function verifyDevPass() { if(document.getElementById('devPassInput').value === ADMIN_PASS) { closeDevPass(); toggleDevPanel(); } else { alert("Wrong Passcode"); } }
+        
+        function switchTab(t) {
+            document.getElementById('panel-inventory').classList.toggle('hidden', t!=='inventory');
+            document.getElementById('panel-settings').classList.toggle('hidden', t!=='settings');
+            const tabs = ['inventory', 'settings'];
+            tabs.forEach(tab => {
+                const el = document.getElementById(`tab-${tab}`);
+                if(el) {
+                    el.className = t === tab ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
+                }
+            });
+        }
+
+        function handleRxUpload(e) {
+            if(e.target.files.length > 0) {
+                prescriptionAttached = true;
+                document.getElementById('rxPrompt').classList.add('hidden');
+                document.getElementById('rxPreview').classList.remove('hidden');
+            }
+        }
+
         function setupDrop() {
-            const z = document.getElementById('dropZone'), f = document.getElementById('fileInput');
-            if(!z) return;
+            const z = document.getElementById('dropZone');
+            const f = document.getElementById('fileInput');
             z.onclick = () => f.click();
             f.onchange = (e) => {
-                const r = new FileReader();
-                r.onload = (ev) => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
                     uploadedImg = ev.target.result;
                     document.getElementById('imagePreview').src = uploadedImg;
                     document.getElementById('imagePreview').classList.remove('hidden');
                     document.getElementById('dropPrompt').classList.add('hidden');
                 };
-                r.readAsDataURL(e.target.files[0]);
+                reader.readAsDataURL(e.target.files[0]);
             };
         }
 
         function addNewProduct() {
-            const n = document.getElementById('devName').value, p = document.getElementById('devPrice').value, d = document.getElementById('devDesc').value;
-            if(!n || !p) return alert("Fill required fields");
+            const n = document.getElementById('devName').value;
+            const p = document.getElementById('devPrice').value;
+            const c = document.getElementById('devCat').value || "General";
+            const o = document.getElementById('devOffer').value || 0;
+            const url = document.getElementById('devImgUrl').value;
+            if(!n || !p) return;
             inventory.unshift({ 
-                id: Date.now(), name: n, desc: d, price: Number(p), 
-                offerPrice: Number(document.getElementById('devOffer').value) || 0,
-                category: document.getElementById('devCat').value || "General",
-                img: uploadedImg || "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400" 
+                id: Date.now(), 
+                name: n, 
+                price: Number(p), 
+                offerPrice: Number(o), 
+                category: c, 
+                img: uploadedImg || url || "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400" 
             });
             saveAndRefresh();
-            document.getElementById('devName').value = ""; document.getElementById('devPrice').value = ""; document.getElementById('devDesc').value = "";
+            document.getElementById('devName').value=""; document.getElementById('devPrice').value=""; document.getElementById('devOffer').value="";
             uploadedImg = ""; document.getElementById('imagePreview').classList.add('hidden'); document.getElementById('dropPrompt').classList.remove('hidden');
         }
 
-        function toggleRxStatus() {
-            prescriptionAttached = document.getElementById('rxCheckbox').checked;
-        }
-
-        function checkout() {
-            if(cart.length === 0 && !prescriptionAttached) return alert("Cart is empty");
-            const n = document.getElementById('cartUserName').value, ph = document.getElementById('cartUserPhone').value, ad = document.getElementById('cartUserAddress').value;
-            if(!n || !ph || !ad) return alert("Fill delivery details");
-
-            const items = cart.map(i=>`? ${i.name} (x${i.qty})`).join('%0A') || "PRESCRIPTION ONLY ORDER";
-            const tot = cart.reduce((s,i)=>s+(i.price*i.qty),0);
-            
-            let msg = `*NEW ORDER: ADARSH MEDICAL*%0A%0A`;
-            msg += `*Name:* ${n}%0A*Phone:* ${ph}%0A*Address:* ${ad}%0A%0A`;
-            msg += `*Items:*%0A${items}%0A%0A`;
-            msg += `*Total Value:* Rs.${tot}%0A%0A`;
-            
-            if(prescriptionAttached) {
-                msg += `*PRESCRIPTION:* I'm sending my prescription via WhatsApp next.`;
-            }
-
-            window.open(`https://wa.me/${siteSettings.waNumber}?text=${msg}`, '_blank');
-        }
-
-        function updateCart() {
-            const c = document.getElementById('cartItems');
-            let t = 0, ct = 0;
-            if(cart.length === 0) c.innerHTML = '<p class="text-center py-10 text-slate-300 text-[10px] font-black uppercase">Cart is empty</p>';
-            else c.innerHTML = cart.map(i => {
-                t += i.price * i.qty; ct += i.qty;
-                return `<div class="flex items-center space-x-4 bg-white p-3 rounded-2xl border border-slate-100">
-                    <img src="${i.img}" class="w-12 h-12 rounded-xl object-cover">
-                    <div class="flex-1"><h4 class="text-[9px] font-black uppercase truncate">${i.name}</h4><p class="text-xs font-black text-teal-600">Rs.${i.price}</p></div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="changeQty(${i.id}, -1)" class="w-6 h-6 bg-slate-100 rounded text-[10px]">-</button>
-                        <span class="text-xs font-black">${i.qty}</span>
-                        <button onclick="changeQty(${i.id}, 1)" class="w-6 h-6 bg-slate-100 rounded text-[10px]">+</button>
-                    </div></div>`;
-            }).join('');
-            document.getElementById('cartTotal').innerText = `Rs.${t}`;
-            document.getElementById('cartCount').innerText = ct;
-            document.getElementById('cartCount').classList.toggle('hidden', ct === 0);
-        }
-
-        function addToCart(id) {
-            const p = inventory.find(i=>i.id===id), ex = cart.find(i=>i.id===id);
-            const pr = (p.offerPrice > 0 && p.offerPrice < p.price) ? p.offerPrice : p.price;
-            if(ex) ex.qty++; else cart.push({...p, price: pr, qty: 1});
-            updateCart(); if(!document.getElementById('cartDrawer').classList.contains('open')) toggleCart();
-        }
-
-        function changeQty(id, d) {
-            const i = cart.find(c=>c.id===id); i.qty += d;
-            if(i.qty <= 0) cart = cart.filter(c=>c.id!==id);
-            updateCart();
+        function saveAndRefresh() {
+            db.ref('inventory').set(inventory);
         }
 
         function renderDevInv() {
             document.getElementById('devInventoryList').innerHTML = inventory.map(i => `
                 <div class="bg-white p-3 rounded-2xl border border-slate-200 flex items-center space-x-3">
                     <img src="${i.img}" class="w-10 h-10 rounded-lg object-cover">
-                    <div class="flex-1 min-w-0"><p class="text-[9px] font-black uppercase truncate">${i.name}</p><p class="text-[8px] text-teal-600">Rs.${i.offerPrice || i.price}</p></div>
-                    <button onclick="delProd(${i.id})" class="text-red-400 px-3"><i class="fas fa-trash"></i></button>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-[9px] font-black uppercase truncate">${i.name}</p>
+                        <p class="text-[8px] text-teal-600">Rs.${i.offerPrice || i.price} | ${i.category}</p>
+                    </div>
+                    <button onclick="delProd(${i.id})" class="text-red-400 hover:text-red-600 px-3"><i class="fas fa-trash"></i></button>
                 </div>`).join('');
         }
-
         function delProd(id) { inventory = inventory.filter(i=>i.id!==id); saveAndRefresh(); }
-        function saveAndRefresh() {
-           // This saves the entire inventory list to the cloud
-            db.ref('inventory').set(inventory);
+
+        function addToCart(id) {
+            const p = inventory.find(i=>i.id===id);
+            const exists = cart.find(i=>i.id===id);
+            const price = (p.offerPrice > 0 && p.offerPrice < p.price) ? p.offerPrice : p.price;
+            if(exists) exists.qty++;
+            else cart.push({...p, price, qty: 1});
+            updateCart();
+            if(!document.getElementById('cartDrawer').classList.contains('open')) toggleCart();
         }
-        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); }
-        function toggleDevPanel() { document.getElementById('devPanel').classList.toggle('open'); if(document.getElementById('devPanel').classList.contains('open')) renderDevInv(); }
-        function openDevPass() { document.getElementById('passModal').classList.add('active'); }
-        function closeDevPass() { document.getElementById('passModal').classList.remove('active'); document.getElementById('devPassInput').value=""; }
-        function verifyDevPass() { if(document.getElementById('devPassInput').value === ADMIN_PASS) { closeDevPass(); toggleDevPanel(); } else alert("Wrong Passcode"); }
-        function switchTab(t) {
-            document.getElementById('panel-inventory').classList.toggle('hidden', t!=='inventory');
-            document.getElementById('panel-settings').classList.toggle('hidden', t!=='settings');
-            document.getElementById('tab-inventory').className = t === 'inventory' ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
-            document.getElementById('tab-settings').className = t === 'settings' ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
+
+        function updateCart() {
+            const container = document.getElementById('cartItems');
+            let total = 0;
+            let count = 0;
+            if(cart.length === 0) container.innerHTML = '<p class="text-center py-10 text-slate-300 text-[10px] font-black uppercase">Your cart is empty</p>';
+            else container.innerHTML = cart.map(i => {
+                total += i.price * i.qty;
+                count += i.qty;
+                return `<div class="flex items-center space-x-4 bg-white p-3 rounded-2xl border border-slate-100">
+                    <img src="${i.img}" class="w-12 h-12 rounded-xl object-cover">
+                    <div class="flex-1">
+                        <h4 class="text-[9px] font-black uppercase truncate w-32">${i.name}</h4>
+                        <p class="text-xs font-black text-teal-600">Rs.${i.price}</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="changeQty(${i.id}, -1)" class="w-6 h-6 bg-slate-100 rounded text-[10px]">-</button>
+                        <span class="text-xs font-black">${i.qty}</span>
+                        <button onclick="changeQty(${i.id}, 1)" class="w-6 h-6 bg-slate-100 rounded text-[10px]">+</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('cartTotal').innerText = `Rs.${total}`;
+            document.getElementById('cartCount').innerText = count;
+            document.getElementById('cartCount').classList.toggle('hidden', count === 0);
+        }
+
+        function changeQty(id, d) {
+            const i = cart.find(c=>c.id===id);
+            i.qty += d;
+            if(i.qty <= 0) cart = cart.filter(c=>c.id!==id);
+            updateCart();
+        }
+
+        function checkout() {
+            if(cart.length === 0 && !prescriptionAttached) {
+                alert("Please add items or upload a prescription first.");
+                return;
+            }
+            const userName = document.getElementById('cartUserName').value;
+            const userPhone = document.getElementById('cartUserPhone').value;
+            const userAddress = document.getElementById('cartUserAddress').value;
+
+            if(!userName || !userPhone || !userAddress) {
+                alert("Please fill in your name, number, and delivery address.");
+                return;
+            }
+
+            const itemsList = cart.length > 0 ? cart.map(i=>`? ${i.name} (x${i.qty})`).join('%0A') : "_Prescription Only Order_";
+            const total = cart.reduce((s,i)=>s+(i.price*i.qty),0);
+            
+            let msg = `*NEW ORDER FROM ADARSH MEDICAL*%0A%0A`;
+            msg += `*Customer Details:*%0AName: ${userName}%0APhone: ${userPhone}%0AAddress: ${userAddress}%0A%0A`;
+            msg += `*Order Summary:*%0A${itemsList}%0A%0A`;
+            msg += `*Total Items Value: Rs.${total}*%0A%0A`;
+            
+            if(prescriptionAttached) {
+                msg += `*PRESCRIPTION:* ? _I have attached a prescription! Please check the image I am sending right after this message._`;
+            }
+
+            window.open(`https://wa.me/${siteSettings.waNumber}?text=${msg}`, '_blank');
+            
+            if(prescriptionAttached) {
+                setTimeout(() => {
+                    alert("Order details sent! Now please send the prescription photo to the shop owner directly in the WhatsApp chat.");
+                }, 1500);
+            }
         }
 
         window.onload = init;
