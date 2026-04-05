@@ -424,12 +424,12 @@
 
         const db = firebase.database();
 
+        const ADMIN_PASS = "admin123";
         const DEFAULT_INVENTORY = [
             { id: 1, name: "Calpol 650mg", price: 32, offerPrice: 28, category: "General Medicine", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400" },
             { id: 2, name: "Multivitamin Gold", price: 450, offerPrice: 399, category: "Supplements", img: "https://images.unsplash.com/photo-1614859324967-bdf471bba774?q=80&w=400" },
             { id: 3, name: "Dettol Liquid 500ml", price: 210, offerPrice: 0, category: "Antiseptic", img: "https://images.unsplash.com/photo-1626716493137-b67fe9501e76?q=80&w=400" }
         ];
-
         const DEFAULT_SETTINGS = {
             brandName: "ADARSH MEDICAL",
             brandSub: "Multi-Location Excellence",
@@ -448,7 +448,6 @@
         let siteSettings = {};
 
         let cart = [];
-        const ADMIN_PASS = "admin123";
         let currentFilter = "All";
         let searchQuery = "";
         let uploadedImg = "";
