@@ -125,7 +125,6 @@
             box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
         }
 
-        /* Search Input Styling */
         .search-container {
             position: relative;
             width: 100%;
@@ -212,28 +211,23 @@
     <!-- Store Section -->
     <section id="store" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-6">
-            <!-- Header and Filters -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-8">
                 <div class="max-w-2xl">
                     <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4">Adarsh <span class="text-teal-600">Inventory.</span></h2>
                     <p class="text-slate-500 font-medium">Explore various medical divisions and seasonal offers.</p>
                 </div>
-                <!-- Search Bar -->
                 <div class="search-container w-full md:w-80">
                     <i class="fas fa-search search-icon"></i>
                     <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search medicine name..." class="input-standard search-input shadow-sm">
                 </div>
             </div>
 
-            <!-- Category Filters -->
             <div id="filterWrap" class="w-full flex overflow-x-auto gap-2 pb-6 mb-10 no-scrollbar">
             </div>
 
-            <!-- Product Grid -->
             <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[400px]">
             </div>
             
-            <!-- Empty State -->
             <div id="emptySearch" class="hidden py-20 text-center">
                 <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                     <i class="fas fa-search text-3xl"></i>
@@ -327,10 +321,8 @@
         </div>
         
         <div class="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
-            <!-- Items -->
             <div id="cartItems" class="space-y-4"></div>
 
-            <!-- Prescription Section -->
             <div class="bg-teal-50 p-6 rounded-[2rem] border border-teal-100">
                 <h4 class="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-4 flex items-center">
                     <i class="fas fa-file-prescription mr-2"></i> Upload Prescription
@@ -348,7 +340,6 @@
                 </div>
             </div>
 
-            <!-- Customer Info -->
             <div class="space-y-4">
                 <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Delivery Details</h4>
                 <input type="text" id="cartUserName" placeholder="Full Name" class="input-standard">
@@ -379,12 +370,11 @@
                     <h2 class="footerBrand text-xl font-black text-slate-800 tracking-tighter mb-4">ADARSH MEDICAL</h2>
                     <p class="text-slate-500 text-sm leading-relaxed mb-6">Serving across multiple locations with guaranteed authenticity and professional healthcare standards.</p>
                     
-                    <!-- Address Section -->
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 mb-6 flex items-start space-x-3">
                         <i class="fas fa-map-marker-alt text-teal-500 mt-1"></i>
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Store Address</p>
-                            <p class="text-xs font-bold text-slate-700">Adarsh Medical Store, bus stand, Chandangaon, Chhindwara, Madhya Pradesh 480003</p>
+                            <p class="text-xs font-bold text-slate-700">Adarsh Medical Store, bus stand, Chandangaon, Chhindwara, Madhya Pradesh 480001</p>
                         </div>
                     </div>
 
@@ -422,6 +412,11 @@
     </footer>
 
     <script>
+        // Storage Keys
+        const STORAGE_KEY_INV = 'adarsh_inv_v4_data';
+        const STORAGE_KEY_SET = 'adarsh_set_v4_data';
+        const ADMIN_PASS = "admin123";
+
         const DEFAULT_INVENTORY = [
             { id: 1, name: "Calpol 650mg", price: 32, offerPrice: 28, category: "General Medicine", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400" },
             { id: 2, name: "Multivitamin Gold", price: 450, offerPrice: 399, category: "Supplements", img: "https://images.unsplash.com/photo-1614859324967-bdf471bba774?q=80&w=400" },
@@ -440,14 +435,14 @@
             heroImg: "https://images.unsplash.com/photo-1586015555751-63bb77f4322a?q=80&w=1000"
         };
 
-        let inventory = JSON.parse(localStorage.getItem('adarsh_inv_v4')) || [...DEFAULT_INVENTORY];
-        let siteSettings = JSON.parse(localStorage.getItem('adarsh_set_v4')) || {...DEFAULT_SETTINGS};
+        // Load existing or default
+        let inventory = JSON.parse(localStorage.getItem(STORAGE_KEY_INV)) || [...DEFAULT_INVENTORY];
+        let siteSettings = JSON.parse(localStorage.getItem(STORAGE_KEY_SET)) || {...DEFAULT_SETTINGS};
         let cart = [];
         let currentFilter = "All";
         let searchQuery = "";
         let uploadedImg = "";
         let prescriptionAttached = false;
-        const ADMIN_PASS = "admin123";
 
         function init() {
             applySettings();
@@ -457,6 +452,8 @@
         }
 
         function applySettings() {
+            // Update UI elements
+            document.querySelectorAll('.footerBrand').forEach(el => el.innerText = siteSettings.brandName);
             document.getElementById('brandName').innerText = siteSettings.brandName;
             document.getElementById('brandSub').innerText = siteSettings.brandSub;
             document.getElementById('heroBadge').innerText = siteSettings.heroBadge;
@@ -468,6 +465,7 @@
             document.getElementById('footerIg').href = siteSettings.igUrl;
             document.getElementById('footerWa').href = `https://wa.me/${siteSettings.waNumber}`;
             
+            // Sync Admin form fields
             document.getElementById('setBrandName').value = siteSettings.brandName;
             document.getElementById('setBrandSub').value = siteSettings.brandSub;
             document.getElementById('setWa').value = siteSettings.waNumber;
@@ -481,7 +479,8 @@
             siteSettings.waNumber = document.getElementById('setWa').value;
             siteSettings.mapUrl = document.getElementById('setMap').value;
             siteSettings.igUrl = document.getElementById('setIg').value;
-            localStorage.setItem('adarsh_set_v4', JSON.stringify(siteSettings));
+            
+            localStorage.setItem(STORAGE_KEY_SET, JSON.stringify(siteSettings));
             applySettings();
             toggleDevPanel();
         }
@@ -510,7 +509,6 @@
             const grid = document.getElementById('productGrid');
             const empty = document.getElementById('emptySearch');
             
-            // Apply filtering logic: Category + Search Query
             const items = inventory.filter(i => {
                 const matchesFilter = (currentFilter === "All" || i.category === currentFilter);
                 const matchesSearch = i.name.toLowerCase().includes(searchQuery);
@@ -560,7 +558,9 @@
             const tabs = ['inventory', 'settings'];
             tabs.forEach(tab => {
                 const el = document.getElementById(`tab-${tab}`);
-                el.className = t === tab ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
+                if(el) {
+                    el.className = t === tab ? "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-teal-500 text-teal-600" : "flex-1 py-4 text-[10px] font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400";
+                }
             });
         }
 
@@ -595,14 +595,21 @@
             const o = document.getElementById('devOffer').value || 0;
             const url = document.getElementById('devImgUrl').value;
             if(!n || !p) return;
-            inventory.unshift({ id: Date.now(), name: n, price: Number(p), offerPrice: Number(o), category: c, img: uploadedImg || url || "https://via.placeholder.com/400" });
+            inventory.unshift({ 
+                id: Date.now(), 
+                name: n, 
+                price: Number(p), 
+                offerPrice: Number(o), 
+                category: c, 
+                img: uploadedImg || url || "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?q=80&w=400" 
+            });
             saveAndRefresh();
             document.getElementById('devName').value=""; document.getElementById('devPrice').value=""; document.getElementById('devOffer').value="";
             uploadedImg = ""; document.getElementById('imagePreview').classList.add('hidden'); document.getElementById('dropPrompt').classList.remove('hidden');
         }
 
         function saveAndRefresh() {
-            localStorage.setItem('adarsh_inv_v4', JSON.stringify(inventory));
+            localStorage.setItem(STORAGE_KEY_INV, JSON.stringify(inventory));
             renderDevInv(); renderFilters(); renderProducts();
         }
 
@@ -663,8 +670,8 @@
         }
 
         function checkout() {
-            if(cart.length === 0) {
-                alert("Please add items to cart first.");
+            if(cart.length === 0 && !prescriptionAttached) {
+                alert("Please add items or upload a prescription first.");
                 return;
             }
             const userName = document.getElementById('cartUserName').value;
@@ -676,16 +683,25 @@
                 return;
             }
 
-            const items = cart.map(i=>`• ${i.name} (x${i.qty})`).join('%0A');
+            const itemsList = cart.length > 0 ? cart.map(i=>`• ${i.name} (x${i.qty})`).join('%0A') : "_Prescription Only Order_";
             const total = cart.reduce((s,i)=>s+(i.price*i.qty),0);
             
             let msg = `*NEW ORDER FROM ADARSH MEDICAL*%0A%0A`;
             msg += `*Customer Details:*%0AName: ${userName}%0APhone: ${userPhone}%0AAddress: ${userAddress}%0A%0A`;
-            msg += `*Order Summary:*%0A${items}%0A%0A`;
-            msg += `*Total Amount: Rs.${total}*%0A%0A`;
-            if(prescriptionAttached) msg += `_Note: I am attaching my prescription photo now..._`;
+            msg += `*Order Summary:*%0A${itemsList}%0A%0A`;
+            msg += `*Total Items Value: Rs.${total}*%0A%0A`;
+            
+            if(prescriptionAttached) {
+                msg += `*PRESCRIPTION:* ? _I have attached a prescription! Please check the image I am sending right after this message._`;
+            }
 
             window.open(`https://wa.me/${siteSettings.waNumber}?text=${msg}`, '_blank');
+            
+            if(prescriptionAttached) {
+                setTimeout(() => {
+                    alert("Order details sent! Now please send the prescription photo to the shop owner directly in the WhatsApp chat.");
+                }, 1500);
+            }
         }
 
         window.onload = init;
