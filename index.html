@@ -472,27 +472,37 @@
         }
 
         function applySettings() {
-            // Update UI elements
-            document.querySelectorAll('.footerBrand').forEach(el => el.innerText = siteSettings.brandName);
-            document.getElementById('brandName').innerText = siteSettings.brandName;
-            document.getElementById('brandSub').innerText = siteSettings.brandSub;
-            document.getElementById('heroBadge').innerText = siteSettings.heroBadge;
-            document.getElementById('heroTitle').innerText = siteSettings.heroTitle;
-            document.getElementById('heroDesc').innerText = siteSettings.heroDesc;
-            document.getElementById('heroImg').src = siteSettings.heroImg;
-            document.getElementById('mapLink').href = siteSettings.mapUrl;
-            document.getElementById('heroWaLink').href = `https://wa.me/${siteSettings.waNumber}`;
-            document.getElementById('footerIg').href = siteSettings.igUrl;
-            document.getElementById('footerWa').href = `https://wa.me/${siteSettings.waNumber}`;
-            
-            // Sync Admin form fields
-            document.getElementById('setBrandName').value = siteSettings.brandName;
-            document.getElementById('setBrandSub').value = siteSettings.brandSub;
-            document.getElementById('setWa').value = siteSettings.waNumber;
-            document.getElementById('setMap').value = siteSettings.mapUrl;
-            document.getElementById('setIg').value = siteSettings.igUrl;
-        }
+            const name = siteSettings.brandName || "Adarsh Medicals";
+            const sub = siteSettings.brandSub || "Pharmacy & Wellness";
+            const wa = siteSettings.waNumber || "916261736546";
+            const ig = siteSettings.igUrl || "https://www.instagram.com/adarsh_medicals_/";
+            const map = siteSettings.mapUrl || "https://maps.app.goo.gl/o88zFcpoYnBKHBKF6";
 
+            document.querySelectorAll('.footerBrand').forEach(el => el.innerText = name);
+    
+            // Use optional chaining (?.) or simple checks to prevent errors if elements are missing
+            if(document.getElementById('brandName')) document.getElementById('brandName').innerText = name;
+            if(document.getElementById('brandSub')) document.getElementById('brandSub').innerText = sub;
+    
+            if(document.getElementById('heroBadge')) document.getElementById('heroBadge').innerText = siteSettings.heroBadge || "Open 24/7";
+            if(document.getElementById('heroTitle')) document.getElementById('heroTitle').innerText = siteSettings.heroTitle || "Your Health, Our Priority";
+            if(document.getElementById('heroDesc')) document.getElementById('heroDesc').innerText = siteSettings.heroDesc || "Quality medicines delivered to your doorstep.";
+    
+            // Update Images and Links
+            if(document.getElementById('heroImg') && siteSettings.heroImg) document.getElementById('heroImg').src = siteSettings.heroImg;
+            
+            if(document.getElementById('mapLink')) document.getElementById('mapLink').href = map;
+            if(document.getElementById('heroWaLink')) document.getElementById('heroWaLink').href = `https://wa.me/${wa}`;
+            if(document.getElementById('footerIg')) document.getElementById('footerIg').href = ig;
+            if(document.getElementById('footerWa')) document.getElementById('footerWa').href = `https://wa.me/${wa}`;
+
+            // 3. Sync Admin form fields (What you see in the Staff Panel)
+            if(document.getElementById('setBrandName')) document.getElementById('setBrandName').value = name;
+            if(document.getElementById('setBrandSub')) document.getElementById('setBrandSub').value = sub;
+            if(document.getElementById('setWa')) document.getElementById('setWa').value = wa;
+            if(document.getElementById('setMap')) document.getElementById('setMap').value = map;
+            if(document.getElementById('setIg')) document.getElementById('setIg').value = ig;
+        }
         function saveSiteSettings() {
             siteSettings.brandName = document.getElementById('setBrandName').value;
             siteSettings.brandSub = document.getElementById('setBrandSub').value;
